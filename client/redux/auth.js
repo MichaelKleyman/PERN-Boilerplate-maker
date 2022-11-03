@@ -9,7 +9,7 @@ const _setAuth = (auth) => ({ type: SET_AUTH, auth });
 export const setAuth = async (dispatch) => {
   const token = JSON.parse(window.localStorage.getItem(TOKEN));
   if (token) {
-    const result = await axios.get("/api/users/auth/me", {
+    const result = await axios.get("/auth/me", {
       headers: {
         authorization: token,
       },
@@ -21,7 +21,7 @@ export const setAuth = async (dispatch) => {
 export const authenticate = (username, password, method) => {
   return async (dispatch) => {
     try {
-      const result = await axios.post(`/api/users/auth/${method}`, {
+      const result = await axios.post(`/auth/${method}`, {
         username,
         password,
       });

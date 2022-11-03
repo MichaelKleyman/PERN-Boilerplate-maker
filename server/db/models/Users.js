@@ -39,7 +39,7 @@ const User = db.define("user", {
 
 User.prototype.generateToken = function () {
   try {
-    const token = jwt.sign({ id: this.id }, '' + process.env.JWT);
+    const token = jwt.sign({ id: this.id }, `${process.env.JWT}`);
     return { token };
   } catch (e) {
     console.error(e);
@@ -50,8 +50,6 @@ User.authenticate = async function ({ username, password }) {
   const user = await this.findOne({
     where: { username },
   });
-  console.log("The User: ", user);
-  console.log("password: ", password);
   const match = await bcrypt.compare(password, user.password);
   if (!user || !match) {
     const error = Error("Incorrect username/password");
@@ -89,5 +87,11 @@ User.addHook("beforeCreate", async (user) => {
     user.password = await bcrypt.hash(user.password, 3);
   }
 });
+
+User.addHook("beforeUpdate", async (user) => {
+    if (user.changed("password")) {
+      user.password = await bcrypt.hash(user.password, 3);
+    }
+  });
 
 module.exports = User;

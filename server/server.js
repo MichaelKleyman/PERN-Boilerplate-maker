@@ -10,6 +10,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use('/api', require('./apiRoutes'));
+app.use('/auth', require('./auth'))
 
 app.get('*', (req, res, next) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));

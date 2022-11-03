@@ -5,7 +5,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { addUser } from "../redux/users";
 import { connect } from "react-redux";
 import { authenticate } from "../redux/auth";
 
@@ -17,15 +16,10 @@ const Signup = (props) => {
   // const [error, serError] = useState("");
 
   const Signup = (details) => {
-    console.log(details)
-    dispatch(addUser(details));
-    dispatch(authenticate(details.username, details.password, details.formName));
+    const formName = displayName.slice(0,1).toLowerCase() + displayName.slice(1);
+    dispatch(authenticate(details.username, details.password, formName));
     navigate('/homepage');
   };
-
-  // const Logout = () => {
-  //   console.log("Logged Out");
-  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -42,7 +36,7 @@ const Signup = (props) => {
 
   return (
     <div className="App">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} name={name}>
         <div className="inner-form">
           <h2>{displayName}</h2>
           <div className="form-group">
@@ -86,7 +80,6 @@ const mapLogin = (state) => {
     name: 'login',
     displayName: 'Login',
     error: state.auth.error,
-    users: state.users,
   }
 }
 
@@ -95,7 +88,6 @@ const mapSignup = (state) => {
     name: "signup",
     displayName: "Signup",
     error: state.auth.error,
-    users: state.users
   };
 };
 

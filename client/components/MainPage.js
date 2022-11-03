@@ -1,21 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
 import { Link } from "react-router-dom";
-import { getUser } from "../redux/singleUser";
 import { connect } from "react-redux";
 
 const MainPage = (props) => {
-  const { singleUser } = props;
-//   const [user, setUser] = useState();
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const userId = singleUser.id || 0;
-    dispatch(getUser(userId));
-  }, []);
-
-  const user = singleUser.name || '';
-  console.log('>>>>', user)
+  const { username } = props;
+  console.log('username', username)
   return (
     <div>
       <nav>
@@ -26,14 +15,14 @@ const MainPage = (props) => {
           Movies To Watch
         </Link>
       </nav>
-      <h1>Welcome {user}</h1>
+      <h1>Welcome {username}</h1>
     </div>
   );
 };
 
 const mapState = (state) => {
   return {
-    singleUser: state.user,
+    username: state.auth.username,
   };
 };
 
